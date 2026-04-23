@@ -1,3 +1,4 @@
+import allure
 import pytest
 from playwright.sync_api import sync_playwright
 from Pages.homePage import Homepage
@@ -22,3 +23,21 @@ def home_Page(page):
 def login_Page(page):
     login_Page=Loginpage(page)
     return login_Page
+
+#Hook will monitor the test execution from start to end and if any test fails, it will capture the screenshot and attach it to allure report, its similar to test listeners
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    # Capture screenshots for setup, call, and teardown failures
+    if report.failed:
+        page = item.funcargs.get("page", None)
+        if page:
+            step = report.when  # setup / call / teardown
+            screenshot = page.screenshot()
+            allure.attach(
+                screenshot,
+                name=f"Failure Screenshot ({step})",
+                attachment_type=allure.attachment_type.PNG
+            )

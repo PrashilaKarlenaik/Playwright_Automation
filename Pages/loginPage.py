@@ -1,7 +1,9 @@
+import allure
 from playwright.sync_api import expect,Page
+from allureWraper import BasePage
 
 
-class Loginpage:
+class Loginpage(BasePage):
     def __init__(self, page: Page):
         self.page = page #constructor will also have page characteristics
         self.loginLink=page.locator("//a[@href='/login']")
@@ -22,16 +24,16 @@ class Loginpage:
         self.passwordTxtBox.fill(passwordValue)
 
     def clickOnLoginBtn(self):
-        self.loginbtn.click()          
+        self.loginbtn.click()
+
+    
 
 
 
-    # def validlogin(self):
-    #     self.loginLink.click()
-    #     print(self.loginToYourActText)
-    #     expect(self.loginToYourActText).to_be_visible
-    #     self.emailTxtBox.fill("testp@gmail.com")
-    #     self.passwordTxtBox.fill("test@123")
-    #     self.loginbtn.click()
+     
+
+
+
+
         
 
